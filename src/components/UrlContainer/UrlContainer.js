@@ -2,11 +2,13 @@ import React from 'react';
 import './UrlContainer.css';
 
 const UrlContainer = props => {
-  const urlEls = props.urls.map(url => {
+  
+  const urls = Array.isArray(props.urls) ? props.urls : [];
+  const urlEls = urls.map((url, index) => {
     return (
-      <div className="url">
+      <div className="url" key={index}>
         <h3>{url.title}</h3>
-        <a href={url.short_url} target="blank">{url.short_url}</a>
+        <a href={url.short_url} target="_blank" rel="noopener noreferrer">{url.short_url}</a>
         <p>{url.long_url}</p>
       </div>
     )
@@ -20,3 +22,4 @@ const UrlContainer = props => {
 }
 
 export default UrlContainer;
+
