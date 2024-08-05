@@ -3,9 +3,15 @@ import React, { useState } from 'react';
 function UrlForm({ onNewUrl }) {
   const [title, setTitle] = useState('');
   const [urlToShorten, setUrlToShorten] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    if (!title || !urlToShorten) {
+      setError('Both fields are required.');
+      return;
+    }
 
     const response = await fetch('http://localhost:3001/api/v1/urls', {
       method: 'POST',
@@ -19,8 +25,9 @@ function UrlForm({ onNewUrl }) {
       const newUrl = await response.json();
       onNewUrl(newUrl);
       clearInputs();
+      setError('');
     } else {
-      console.error('Failed to shorten URL');
+      setError('Failed to shorten URL');
     }
   };
 
@@ -50,6 +57,8 @@ function UrlForm({ onNewUrl }) {
       <button onClick={handleSubmit}>
         Shorten Please!
       </button>
+
+      {error && <p className="error">{error}</p>}
     </form>
   );
 }
