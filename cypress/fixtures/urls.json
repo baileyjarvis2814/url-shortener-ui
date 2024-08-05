@@ -1,0 +1,9 @@
+[
+    {
+      "id": 1,
+      "title": "Awesome photo",
+      "short_url": "http://localhost:3001/useshorturl/1",
+      "long_url": "https://images.unsplash.com/photo..."
+    }
+  ]
+  

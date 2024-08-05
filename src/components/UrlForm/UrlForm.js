@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
 
-function UrlForm() {
+function UrlForm({ onNewUrl }) {
   const [title, setTitle] = useState('');
   const [urlToShorten, setUrlToShorten] = useState('');
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    clearInputs();
-  }
+
+    const response = await fetch('http://localhost:3001/api/v1/urls', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ long_url: urlToShorten, title })
+    });
+
+    if (response.ok) {
+      const newUrl = await response.json();
+      onNewUrl(newUrl);
+      clearInputs();
+    } else {
+      console.error('Failed to shorten URL');
+    }
+  };
 
   const clearInputs = () => {
     setTitle('');
     setUrlToShorten('');
-  }
+  };
 
   return (
     <form>
@@ -36,7 +51,7 @@ function UrlForm() {
         Shorten Please!
       </button>
     </form>
-  )
+  );
 }
 
 export default UrlForm;
